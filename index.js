@@ -88,7 +88,6 @@ app.post("/park",(req,res)=>{
         }
 
         addCar(color,car_reg_no,slot);
-        console.log(`cars=${cars}`)
         res.send(`Car parked at slot:${slot+1}`);//since we need to start from 1
     }
     catch(err){
@@ -130,9 +129,12 @@ app.post("/clear",(req,res)=>{ //to remove car from the slot
         if(emptyslots[slot_number]===true){
             throw new Error("This Slot is already Free!");
         }
+        if (slot_number < 0 || slot_number >= emptyslots.length) {
+            throw new Error("Invalid Slot Number!");
+        }
         let color=emptyslots[slot_number];
         removeCarByColorAndSlot(color,slot_number);
-        res.send(`Slot no.${slot_number+1} is free now!`);
+        res.send(`Slot no.${slot_number} is free now!`);
     }
     catch(err){
         res.status(400).send(err.message);
